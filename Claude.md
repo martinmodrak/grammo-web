@@ -87,7 +87,8 @@ otherwise.
  
 - Elm modules: `Main.elm` to start; split out `Compiler.elm` (types and
   decoders) once it grows; ports stay in `Main.elm`. Avoid `Debug.log` in committed code.
-- Decoders get elm-test tests with JSON samples taken from real compiler output.
+- Decoders get elm-test tests using neutral sample strings, not copies of
+  placeholder compiler output.
 - Custom elements: register them in JS *before* `Elm.Main.init`. Elm renders
   them with **no children**. Content goes in via `Html.Attributes.property`, and
   changes come out via custom DOM events decoded with `Html.Events.on`. The

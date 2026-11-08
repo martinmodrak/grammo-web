@@ -7,22 +7,14 @@ import Json.Encode as Encode
 import Test exposing (Test, describe, test)
 
 
-{-| The start of the real output for the valid program in Examples.md.
--}
-realCode : String
-realCode =
-    """{ Ast.data =
-  [{ Data.name = "df";
-     type_ =
-     (Data.DataFrame
-        [{ Data.name = "y"; col_type = Data.Real };"""
+sampleCode : String
+sampleCode =
+    "sample code"
 
 
-{-| The real output for the invalid program in Examples.md.
--}
-realError : String
-realError =
-    "Parse error: 1:0-1:3syntax error in state 0\nSee parser.messages for context. \nRun menhir --list-errors lib/frontend/parser.mly > lib/frontend/parser.messages to regenerate the messages."
+sampleError : String
+sampleError =
+    "sample error"
 
 
 payload : Encode.Value -> Encode.Value -> Encode.Value
@@ -40,16 +32,16 @@ suite =
     describe "Compiler.decoder"
         [ test "ok: code without error" <|
             \_ ->
-                decode (payload Encode.null (Encode.string realCode))
-                    |> Expect.equal (Ok (Compiled { code = realCode, warnings = [] }))
+                decode (payload Encode.null (Encode.string sampleCode))
+                    |> Expect.equal (Ok (Compiled { code = sampleCode, warnings = [] }))
         , test "error: error without code" <|
             \_ ->
-                decode (payload (Encode.string realError) Encode.null)
-                    |> Expect.equal (Ok (Failed [ realError ]))
+                decode (payload (Encode.string sampleError) Encode.null)
+                    |> Expect.equal (Ok (Failed [ sampleError ]))
         , test "warnings: code and error together keep the code" <|
             \_ ->
-                decode (payload (Encode.string "invalid Stan") (Encode.string realCode))
-                    |> Expect.equal (Ok (Compiled { code = realCode, warnings = [ "invalid Stan" ] }))
+                decode (payload (Encode.string sampleError) (Encode.string sampleCode))
+                    |> Expect.equal (Ok (Compiled { code = sampleCode, warnings = [ sampleError ] }))
         , describe "malformed payloads"
             [ test "both fields null" <|
                 \_ ->
@@ -57,7 +49,7 @@ suite =
                         |> Expect.err
             , test "missing field" <|
                 \_ ->
-                    decode (Encode.object [ ( "code", Encode.string realCode ) ])
+                    decode (Encode.object [ ( "code", Encode.string sampleCode ) ])
                         |> Expect.err
             , test "field of the wrong type" <|
                 \_ ->
@@ -65,7 +57,7 @@ suite =
                         |> Expect.err
             , test "not an object" <|
                 \_ ->
-                    decode (Encode.string realCode)
+                    decode (Encode.string sampleCode)
                         |> Expect.err
             ]
         , test "fromValue reports a malformed payload as a failure" <|

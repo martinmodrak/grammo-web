@@ -172,10 +172,8 @@ elm 0.19.3-0, elm-format 0.8.8, elm-test 0.19.3-0.
 | string | string | `Compiled` with `error` as its one warning |
 | `null` | `null` | Decode failure |
 
-`Compiler.fromValue` shows decode failures to the user as `Failed`. The test
-samples are real compiler output, except that `code` is an excerpt of the AST
-dump and the both-set case is constructed, since the compiler can't produce it
-yet.
+`Compiler.fromValue` shows decode failures to the user as `Failed`. The tests
+use neutral sample strings, because the decoder only depends on the JSON shape.
 
 Keep `Main.elm` importing a local module: vite-plugin-elm 3.0.1 generates
 `accept([""])` without one, and Vite then returns 500 for `Main.elm`.
