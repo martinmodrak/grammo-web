@@ -7,8 +7,8 @@
     "build:compiler": "echo 'build:compiler is a stub until step 8'",
     "dev": "vite",
     "build": "npm run build:compiler && vite build",
-    "test": "node scripts/smoke.mjs",
-    "format": "elm-format --yes src/"
+    "test": "elm-test && node scripts/smoke.mjs",
+    "format": "elm-format --yes src/ tests/"
   },
   "devDependencies": {
     "elm": "0.19.3-0",

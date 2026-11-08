@@ -166,15 +166,28 @@ elm 0.19.3-0, elm-format 0.8.8, elm-test 0.19.3-0.
 - **`npm audit` reports 3 high-severity issues**, all from `cross-spawn` via
   `node-elm-compiler`, a dependency of vite-plugin-elm. It only runs at
   development time and is not bundled into the site.
-- **`vite.config.js` has a workaround for a vite-plugin-elm bug.** With no local
-  Elm imports the plugin generates `accept([""])`, which makes Vite return 500.
-  It can be removed once `Main.elm` always imports a local module such as
-  `Compiler.elm`.
 
 npm scripts that differ from `Claude.md` for now:
 
 | Script | Now | Becomes |
 |---|---|---|
 | `build:compiler` | Stub that only prints a message | Dune build + copy (step 8) |
-| `test` | Smoke test only | elm-test + smoke test (step 7) |
-| `format` | `src/` only, since `tests/` doesn't exist | `src/ tests/` (step 7) |
+
+## Elm decoder (step 7)
+
+`Compiler.decoder` maps the compiler's result as follows:
+
+| `error` | `code` | Result |
+|---|---|---|
+| `null` | string | `Compiled` with no warnings |
+| string | `null` | `Failed [ error ]` |
+| string | string | `Compiled` with `error` as its one warning |
+| `null` | `null` | Decode failure |
+
+`Compiler.fromValue` shows decode failures to the user as `Failed`. The test
+samples are real compiler output, except that `code` is an excerpt of the AST
+dump and the both-set case is constructed, since the compiler can't produce it
+yet.
+
+Keep `Main.elm` importing a local module: vite-plugin-elm 3.0.1 generates
+`accept([""])` without one, and Vite then returns 500 for `Main.elm`.

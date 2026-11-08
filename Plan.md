@@ -39,7 +39,7 @@ The user may reorder, split, or drop steps. Follow this file as it currently is.
   `main.js` answers with a hard-coded JS stub that returns a contract-shaped
   object. Elm just shows the raw JSON for now. Done when: the round trip works
   in the browser.
-- [ ] **7. Decoder + error display.** Add the `CompileResult` type and decoder,
+- [x] **7. Decoder + error display.** Add the `CompileResult` type and decoder,
   and show Stan code and error. Add elm-test
   tests for the decoder, covering ok, error, warnings, and a malformed payload.
   Done when: `npm test` passes and both cases render with the stub.

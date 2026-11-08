@@ -4,9 +4,15 @@ import "./style.css";
 // vite-plugin-elm compiles Main.elm and turns it into an ES module exporting Elm.
 import { Elm } from "./Main.elm";
 
-// Placeholder with the same result shape as the real compiler.
+// Placeholder with the same result shape as the real compiler. Blank input gives
+// an error, and input containing "warn" gives both code and an error.
 function stubCompile(source) {
-  return { error: null, code: `// Stub received ${source.length} characters` };
+  if (source.trim() === "") {
+    return { error: "Stub error: the input is empty.", code: null };
+  }
+  const code = `// Stub received ${source.length} characters`;
+  const error = source.includes("warn") ? "Stub warning: the Stan code is invalid." : null;
+  return { error, code };
 }
 
 const app = Elm.Main.init({ node: document.getElementById("app") });
