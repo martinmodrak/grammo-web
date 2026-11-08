@@ -62,7 +62,7 @@ yourself. If there are problems ask.
  
 ## Tooling
  
-- Elm 0.19.1, installed as an npm dev dependency (`elm`), plus `elm-format`
+- Elm 0.19.3, installed as an npm dev dependency (`elm`), plus `elm-format`
   and `elm-test`. All Elm code must be `elm-format`ted.
 - Vite with `vite-plugin-elm`. Plain CSS in `src/style.css`. No CSS framework.
 - CodeMirror 6 (`codemirror`, `@codemirror/*` packages) for the editors.
