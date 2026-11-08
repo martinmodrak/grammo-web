@@ -46,7 +46,7 @@ The user may reorder, split, or drop steps. Follow this file as it currently is.
 - [x] **8. Real compiler on the main thread.** Implement `npm run build:compiler`
   (dune build + copy to `public/grammo.js`). Load it with a `<script>` tag and
   call it from `main.js`. Done when: real grammo code compiles in the browser.
-- [ ] **9. Move it into a Web Worker.** `public/compiler-worker.js` uses
+- [ ] **9. Move it into a Web Worker.** *(Deferred: the compiler stays synchronous on the main thread for now.)* `public/compiler-worker.js` uses
   `importScripts("grammo.js")`. `main.js` relays messages, tags each request
   with an id, and ignores stale responses. Done when: behaviour matches step 8
   and the main thread no longer loads `grammo.js`.

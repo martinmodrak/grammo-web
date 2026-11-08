@@ -190,3 +190,9 @@ the compiler. `npm run build` runs it automatically.
   never bundled.
 - `scripts/smoke.mjs` was removed at the user's request, so `npm test` is only
   elm-test and no longer needs the compiler built.
+
+## Web Worker (step 9, deferred)
+
+The compiler stays synchronous on the main thread for now. A trial worker
+compiled valid and invalid programs correctly in headless Chromium when messaged
+directly, so `importScripts` and passing the result object both work.
