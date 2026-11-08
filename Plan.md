@@ -50,7 +50,7 @@ The user may reorder, split, or drop steps. Follow this file as it currently is.
   `importScripts("grammo.js")`. `main.js` relays messages, tags each request
   with an id, and ignores stale responses. Done when: behaviour matches step 8
   and the main thread no longer loads `grammo.js`.
-- [ ] **10. Timeout and robustness.** If a compile takes longer than N seconds
+- [ ] **10. Timeout and robustness.** *(Skipped: depends on the Web Worker from step 9.)* If a compile takes longer than N seconds
   (N in a constant), terminate and restart the worker and send Elm a
   "compiler timed out" result. Also handle worker load errors. Show a
   "compiling…" state in Elm. Done when: you can demonstrate the timeout, e.g.
@@ -58,7 +58,7 @@ The user may reorder, split, or drop steps. Follow this file as it currently is.
 
 ## Phase C — real editors
 
-- [ ] **11. `<code-editor>` custom element, input pane.** Wrap CodeMirror 6 with
+- [x] **11. `<code-editor>` custom element, input pane.** Wrap CodeMirror 6 with
   a plain setup and no language mode. Replace the textarea. Done when: editing
   works, the cursor never jumps, and Elm state stays in sync.
 - [ ] **12. Read-only output pane.** Reuse the element with a `readonly`

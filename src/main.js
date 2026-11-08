@@ -1,6 +1,8 @@
 // Importing a CSS file is a Vite feature: it adds the styles to the page in dev
 // and bundles them into a .css file in the production build.
 import "./style.css";
+// Registers <code-editor>. This has to happen before Elm first renders it.
+import "./editor.js";
 // vite-plugin-elm compiles Main.elm and turns it into an ES module exporting Elm.
 import { Elm } from "./Main.elm";
 

@@ -2,9 +2,10 @@ port module Main exposing (main)
 
 import Browser
 import Compiler exposing (CompileResult(..))
-import Html exposing (Html, button, div, h2, label, pre, text, textarea)
-import Html.Attributes exposing (class, for, id, spellcheck, value)
-import Html.Events exposing (onClick, onInput)
+import Html exposing (Html, button, div, h2, pre, text)
+import Html.Attributes exposing (class, id, property)
+import Html.Events exposing (on, onClick)
+import Json.Decode as Decode
 import Json.Encode as Encode
 
 
@@ -75,14 +76,8 @@ view model =
     in
     div [ class "layout" ]
         [ div [ class "pane" ]
-            [ label [ for "source" ] [ text "Grammo" ]
-            , textarea
-                [ id "source"
-                , value model.source
-                , onInput SourceChanged
-                , spellcheck False
-                ]
-                []
+            [ h2 [] [ text "Grammo" ]
+            , codeEditor model.source
             , button [ onClick CompileClicked ] [ text "Compile" ]
             ]
         , div [ class "pane" ]
@@ -92,3 +87,12 @@ view model =
             , pre [ id "errors" ] [ text (String.join "\n\n" diagnostics) ]
             ]
         ]
+
+
+codeEditor : String -> Html Msg
+codeEditor source =
+    Html.node "code-editor"
+        [ property "value" (Encode.string source)
+        , on "editor-change" (Decode.map SourceChanged (Decode.field "detail" Decode.string))
+        ]
+        []

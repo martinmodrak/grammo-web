@@ -29,14 +29,12 @@ body {
   min-height: 0;
 }
 
-label,
 h2 {
   margin: 0;
   font-size: 1rem;
   font-weight: 600;
 }
 
-textarea,
 pre {
   flex: 1;
   min-height: 0;
@@ -48,8 +46,18 @@ pre {
   overflow: auto;
 }
 
-textarea {
-  resize: none;
+/* Custom elements are inline by default. */
+code-editor {
+  display: block;
+  flex: 1;
+  min-height: 0;
+  border: 1px solid #999;
+  font-size: 0.875rem;
+}
+
+/* Makes the editor fill its element and scroll inside it. */
+.cm-editor {
+  height: 100%;
 }
 
 #errors {

@@ -196,3 +196,18 @@ the compiler. `npm run build` runs it automatically.
 The compiler stays synchronous on the main thread for now. A trial worker
 compiled valid and invalid programs correctly in headless Chromium when messaged
 directly, so `importScripts` and passing the result object both work.
+
+## Code editor (step 11)
+
+`codemirror` 6.0.2 is pinned in `package.json`. Elm passes text in through the
+`value` property and receives edits from the `editor-change` event's `detail`.
+
+Elm handles the event synchronously, so its model is current by the next render
+and the `value` it sets matches the document. The setter skips that no-op, which
+is what keeps the cursor still.
+
+## Testing in headless Chromium
+
+The container has no fonts. Without any, Chromium measures text as zero width
+and typing misbehaves badly, in both a textarea and CodeMirror. A headless
+browser here needs a font and a `FONTCONFIG_FILE` pointing at it.
