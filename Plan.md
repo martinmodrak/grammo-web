@@ -26,7 +26,7 @@ The user may reorder, split, or drop steps. Follow this file as it currently is.
 
 ## Phase B — Elm app with plain textareas
 
-- [ ] **4. Scaffold.** `package.json`, Vite + `vite-plugin-elm`, `elm.json`,
+- [x] **4. Scaffold.** `package.json`, Vite + `vite-plugin-elm`, `elm.json`,
   `index.html`, `src/main.js`, and `src/Main.elm` showing "Hello Grammo".
   Add `.gitignore` and the npm scripts from `CLAUDE.md` (stubs are OK for
   ones not needed yet). Done when: `npm run dev` serves the page and

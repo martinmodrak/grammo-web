@@ -157,3 +157,28 @@ Compatible but worth knowing:
    `grammo-web/dist/`.
 6. **Plan step 2 has a truncated sentence** ("taken from , and prints").
    Assumed to mean `Examples.md`.
+
+## Frontend tooling (step 4)
+
+Versions are pinned exactly in `package.json`: vite 8.3.6, vite-plugin-elm 3.0.1,
+elm 0.19.1-5, elm-format 0.8.8, elm-test 0.19.1-revision17.
+
+- **Keep `elm` and `elm-test` on the 0.19.1 line.** npm's `latest` for both is
+  `0.19.3-0`, but the project targets Elm 0.19.1. `0.19.1-5` and
+  `0.19.1-revision17` are the releases tagged `latest-0.19.1`.
+- **Don't run `npm audit fix --force`.** npm reports 9 vulnerabilities, in
+  packages used by the `elm` installer (`request` and its dependencies) and
+  `node-elm-compiler` (`cross-spawn`). These only run at development time and
+  none is bundled into the site. The forced fix would move to Elm 0.19.3.
+- **`vite.config.js` has a workaround for a vite-plugin-elm bug.** With no local
+  Elm imports the plugin generates `accept([""])`, which makes Vite return 500.
+  It can be removed once `Main.elm` always imports a local module such as
+  `Compiler.elm`.
+
+npm scripts that differ from `Claude.md` for now:
+
+| Script | Now | Becomes |
+|---|---|---|
+| `build:compiler` | Stub that only prints a message | Dune build + copy (step 8) |
+| `test` | Smoke test only | elm-test + smoke test (step 7) |
+| `format` | `src/` only, since `tests/` doesn't exist | `src/ tests/` (step 7) |

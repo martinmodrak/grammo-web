@@ -1,0 +1,20 @@
+{
+  "name": "grammo-web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build:compiler": "echo 'build:compiler is a stub until step 8'",
+    "dev": "vite",
+    "build": "npm run build:compiler && vite build",
+    "test": "node scripts/smoke.mjs",
+    "format": "elm-format --yes src/"
+  },
+  "devDependencies": {
+    "elm": "0.19.1-5",
+    "elm-format": "0.8.8",
+    "elm-test": "0.19.1-revision17",
+    "vite": "8.3.6",
+    "vite-plugin-elm": "3.0.1"
+  }
+}
