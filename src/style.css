@@ -1,0 +1,72 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: system-ui, sans-serif;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  height: 100%;
+  padding: 1rem;
+}
+
+.pane {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+  min-height: 0;
+}
+
+label,
+h2 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+textarea,
+pre {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: 0.5rem;
+  border: 1px solid #999;
+  font-family: ui-monospace, monospace;
+  font-size: 0.875rem;
+  overflow: auto;
+}
+
+textarea {
+  resize: none;
+}
+
+#errors {
+  flex: 0 0 25%;
+  color: #b00020;
+  white-space: pre-wrap;
+}
+
+button {
+  align-self: flex-start;
+  padding: 0.25rem 1rem;
+}
+
+@media (max-width: 700px) {
+  .layout {
+    grid-template-columns: 1fr;
+    grid-auto-rows: minmax(20rem, 1fr);
+    height: auto;
+  }
+}

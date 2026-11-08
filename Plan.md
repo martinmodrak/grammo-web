@@ -31,7 +31,7 @@ The user may reorder, split, or drop steps. Follow this file as it currently is.
   Add `.gitignore` and the npm scripts from `CLAUDE.md` (stubs are OK for
   ones not needed yet). Done when: `npm run dev` serves the page and
   `npm run build` produces `dist/`.
-- [ ] **5. Layout with a fake compiler.** Two side-by-side panes: a `<textarea>`
+- [x] **5. Layout with a fake compiler.** Two side-by-side panes: a `<textarea>`
   for the DSL and a read-only `<pre>` for output, and another read-only `<pre>` for errors, plus a Compile button. The
   "compiler" is a pure Elm function (for example, upper-cases the input). No JS
   involved. Done when: typing then clicking Compile updates the right pane.
