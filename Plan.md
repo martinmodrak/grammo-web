@@ -13,7 +13,7 @@ The user may reorder, split, or drop steps. Follow this file as it currently is.
   produces the JS file, and any example DSL programs found in the repo.
   *No code changes.* Done when: `NOTES.md` exists and you've listed every
   mismatch with the contract in `CLAUDE.md`.
-- [ ] **1. Build the JS.** Build the JS target in release mode. Record the
+- [x] **1. Build the JS.** Build the JS target in release mode. Record the
   exact command and output path in `NOTES.md`.
   Done when: the file builds from a clean `_build`.
 - [ ] **2. Node smoke test.** Add `scripts/smoke.mjs`. It loads the built

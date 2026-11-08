@@ -1,25 +1,36 @@
 # Notes
 
+## Node
+
+Node v26.13.0 LTS ("Lithium"), linux-x64, from the official nodejs.org tarball
+with its SHA-256 checked. It is unpacked in
+`~/.local/lib/node-v26.13.0-linux-x64/`, with `node`, `npm` and `npx` symlinked
+into `~/.local/bin`, which is already on `PATH`. This lives in the container's
+home directory, so it has to be repeated if the container is rebuilt.
+
+To remove it: delete that directory and the three symlinks.
+
 ## Compiler JS interface (step 0)
 
 Read at `grammo` commit `313013f` ("JS frontend dummy"). Toolchain: OCaml 5.5.0,
-dune 3.24.2, js_of_ocaml 6.5.0. This was found by reading the source; nothing
-has been built or run yet. Items marked *(confirm in step 1/2)* are expectations.
+dune 3.24.2, js_of_ocaml 6.5.0. Updated for `grammo` commit `aacdde0`. Items
+marked *to confirm* are expectations that have not been run yet.
 
 ### Exports
 
-`bin/grammo_js.ml` calls `Js.export "dslc" object%js ... end`, so the only
-exported name is `dslc`, with one method:
+`bin/grammo_js.ml` calls `Js.export "grammoc" object%js ... end`, so the only
+exported name is `grammoc`, with one method:
 
 ```ts
-dslc.compile(src: string): { error: string | null, code: string | null }
+grammoc.compile(src: string): { error: string | null, code: string | null }
 ```
 
 `src` goes straight into `Js.to_string`, so it must be a real JS string.
 
 `Js.export` writes to js_of_ocaml's `jsoo_exports` object. That should be
 `module.exports` under CommonJS `require` and the global object otherwise, so
-`self.dslc` after `importScripts` in a worker. *(confirm in step 2 and step 9)*
+`self.grammoc` after `importScripts` in a worker. The `require` case is confirmed;
+the worker case is still *(to confirm in step 9)*.
 
 ### Returned object
 
@@ -49,8 +60,10 @@ The string is `"Parse error: " ^ pos ^ msg`, with `pos` as
 parser.messages...`. Syntax errors expose only a parser state number plus a
 developer hint about regenerating `parser.messages`.
 
-**Thrown, not returned.** Neither `compile_string` nor `grammo_js.ml` has a
-catch-all, so these escape `dslc.compile` as JS exceptions:
+**Exceptions.** `compile_string` has no catch-all, so these raise. A catch-all
+in `bin/grammo_js.ml` (commit `2652899`) turns them into
+`{ error: "Compilation error: <Exn.to_string>", code: null }`, for example
+`Compilation error: (Invalid_argument "Unknown argument names used")`:
 
 | Source | Trigger |
 |---|---|
@@ -61,8 +74,8 @@ catch-all, so these escape `dslc.compile` as JS exceptions:
 | `lexer.mll` `INT (int_of_string n)` `Failure` | Integer literal too large to fit |
 | `Parse.ml` `assert false` on `Rejected` | Should be unreachable |
 
-The value thrown is expected to be a js_of_ocaml-encoded OCaml exception rather
-than a JS `Error`, so `.message` can't be relied on. *(confirm in step 2)*
+All of these except the unreachable `assert false` were run in Node against a
+release build and came back as returned errors.
 
 ### Line and column base
 
@@ -82,9 +95,21 @@ Locations are only available embedded in the error string.
 - Stanza: `(executable (name grammo_js) (modes js) ...)` in `bin/dune`, with
   `js_of_ocaml-ppx`, `grammo.driver` and `js_of_ocaml`.
 - Target: `bin/grammo_js.bc.js`, confirmed with `dune rules`.
-- Output: `grammo/_build/default/bin/grammo_js.bc.js`. Not built yet.
+- Output: `grammo/_build/default/bin/grammo_js.bc.js`.
 - `dune-project` is `(lang dune 3.21)`. There is no `js_of_ocaml` flags stanza,
   so the profile's defaults apply.
+
+### Release build (step 1)
+
+Run in `grammo/`, with the local opam switch active:
+
+```sh
+dune build --profile release bin/grammo_js.bc.js
+```
+
+Output: `grammo/_build/default/bin/grammo_js.bc.js`, about 1.9 MB. It was checked
+from a clean state at `aacdde0` by adding `--build-dir=<empty dir>`, which leaves
+the real `_build` alone.
 
 ### Example DSL programs
 
@@ -101,18 +126,12 @@ Locations are only available embedded in the error string.
 
 ### Compiler contract
 
-1. **`code` holds an AST dump, not Stan.** This is the most significant one. The
-   contract says `code: "<stan code>"`. The fix belongs in `lib/driver/JS.ml`,
-   see item 4.
-2. **Non-parse failures throw instead of returning `{ error }`.** See the table
-   above. The contract only describes a returned object, so either the OCaml
-   side needs a catch-all or `main.js`/the worker must catch and convert.
-3. **The function is `dslc.compile`, not a bare `compile`.** Only affects the JS
+1. **`code` holds an AST dump, not Stan.** Intentional placeholder, confirmed by
+   the user. Treat it as valid output for now.
+2. **Non-parse failures threw instead of returning `{ error }`.** Fixed by the
+   catch-all in `bin/grammo_js.ml` (commit `2652899`).
+3. **The function is `grammoc.compile`, not a bare `compile`.** Only affects the JS
    glue.
-4. **Where a fix may go is unclear.** Plan step 3 and `Claude.md` only allow
-   changing `bin/grammo_js.ml`, and the root `Claude.md` forbids modifying the
-   compiler otherwise. Item 1 needs a change in `lib/driver/JS.ml`, and only the
-   catch-all from item 2 could live in `bin/grammo_js.ml`.
 
 Compatible but worth knowing:
 
@@ -123,11 +142,11 @@ Compatible but worth knowing:
 
 ### Environment and instructions
 
-5. **Node and npm are not installed in the container**, while `Claude.md` says
-   to use whichever LTS is there. Blocks step 2 onwards.
-6. **File and directory names differ from the docs.** The docs say `CLAUDE.md`,
+4. **Node and npm were not installed in the container**, while `Claude.md` says
+   to use whichever LTS is there. Resolved with a local install, see below.
+5. **File and directory names differ from the docs.** The docs say `CLAUDE.md`,
    `PLAN.md` and `web/`. The real names are `Claude.md`, `Plan.md` and
    `grammo-web/`. `Claude.md` also mentions `web/dist/`, assumed to mean
    `grammo-web/dist/`.
-7. **Plan step 2 has a truncated sentence** ("taken from , and prints").
+6. **Plan step 2 has a truncated sentence** ("taken from , and prints").
    Assumed to mean `Examples.md`.
