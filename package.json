@@ -18,6 +18,7 @@
     "vite-plugin-elm": "3.0.1"
   },
   "dependencies": {
+    "@codemirror/state": "6.7.6",
     "codemirror": "6.0.2"
   }
 }

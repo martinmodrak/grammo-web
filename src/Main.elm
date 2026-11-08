@@ -82,7 +82,7 @@ view model =
             ]
         , div [ class "pane" ]
             [ h2 [] [ text "Stan code" ]
-            , pre [ id "code" ] [ text code ]
+            , outputEditor code
             , h2 [] [ text "Errors" ]
             , pre [ id "errors" ] [ text (String.join "\n\n" diagnostics) ]
             ]
@@ -94,5 +94,15 @@ codeEditor source =
     Html.node "code-editor"
         [ property "value" (Encode.string source)
         , on "editor-change" (Decode.map SourceChanged (Decode.field "detail" Decode.string))
+        ]
+        []
+
+
+outputEditor : String -> Html Msg
+outputEditor code =
+    Html.node "code-editor"
+        [ id "code"
+        , property "readonly" (Encode.bool True)
+        , property "value" (Encode.string code)
         ]
         []

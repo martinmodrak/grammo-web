@@ -61,7 +61,7 @@ The user may reorder, split, or drop steps. Follow this file as it currently is.
 - [x] **11. `<code-editor>` custom element, input pane.** Wrap CodeMirror 6 with
   a plain setup and no language mode. Replace the textarea. Done when: editing
   works, the cursor never jumps, and Elm state stays in sync.
-- [ ] **12. Read-only output pane.** Reuse the element with a `readonly`
+- [x] **12. Read-only output pane.** Reuse the element with a `readonly`
   property. Done when: compiled Stan shows in CodeMirror, and it's selectable
   and copyable.
 - [ ] **13. Keyboard shortcut.** Ctrl/Cmd+Enter compiles. Done when: it works

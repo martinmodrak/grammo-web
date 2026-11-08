@@ -1,9 +1,13 @@
+import { EditorState } from "@codemirror/state";
 import { EditorView, basicSetup } from "codemirror";
 
 // <code-editor>: a CodeMirror editor that Elm can use like any other element.
 // Elm sets the `value` property to pass text in, and listens for the
-// `editor-change` event, whose `detail` is the new text.
+// `editor-change` event, whose `detail` is the new text. Setting the `readonly`
+// property to true blocks editing but still allows selecting and copying. It is
+// read once, when the element is added to the page.
 class CodeEditor extends HTMLElement {
+  readonly = false;
   #view = null;
   // Holds the text until the editor exists, because Elm sets properties before
   // it adds the element to the page.
@@ -16,6 +20,7 @@ class CodeEditor extends HTMLElement {
       parent: this,
       extensions: [
         basicSetup,
+        EditorState.readOnly.of(this.readonly),
         EditorView.updateListener.of((update) => {
           if (update.docChanged && !this.#applyingValue) {
             this.dispatchEvent(
