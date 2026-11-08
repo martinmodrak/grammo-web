@@ -1,20 +1,12 @@
-port module Compiler exposing
+module Compiler exposing
     ( CompileResult(..)
     , Diagnostic
-    , compile
-    , compiled
     , decoder
     , fromValue
     )
 
 import Json.Decode as Decode exposing (Decoder)
 import Json.Encode as Encode
-
-
-port compile : String -> Cmd msg
-
-
-port compiled : (Encode.Value -> msg) -> Sub msg
 
 
 type alias Diagnostic =

@@ -1,4 +1,4 @@
-module Main exposing (main)
+port module Main exposing (main)
 
 import Browser
 import Compiler exposing (CompileResult(..))
@@ -6,6 +6,12 @@ import Html exposing (Html, button, div, h2, label, pre, text, textarea)
 import Html.Attributes exposing (class, for, id, spellcheck, value)
 import Html.Events exposing (onClick, onInput)
 import Json.Encode as Encode
+
+
+port compile : String -> Cmd msg
+
+
+port compiled : (Encode.Value -> msg) -> Sub msg
 
 
 main : Program () Model Msg
@@ -42,7 +48,7 @@ update msg model =
             ( { model | source = source }, Cmd.none )
 
         CompileClicked ->
-            ( model, Compiler.compile model.source )
+            ( model, compile model.source )
 
         GotResult value ->
             ( { model | result = Just (Compiler.fromValue value) }, Cmd.none )
@@ -50,7 +56,7 @@ update msg model =
 
 subscriptions : Model -> Sub Msg
 subscriptions _ =
-    Compiler.compiled GotResult
+    compiled GotResult
 
 
 view : Model -> Html Msg
@@ -61,8 +67,8 @@ view model =
                 Nothing ->
                     ( "", [] )
 
-                Just (Compiled compiled) ->
-                    ( compiled.code, compiled.warnings )
+                Just (Compiled success) ->
+                    ( success.code, success.warnings )
 
                 Just (Failed errors) ->
                     ( "", errors )
