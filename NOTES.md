@@ -111,6 +111,13 @@ Output: `grammo/_build/default/bin/grammo_js.bc.js`, about 1.9 MB. It was checke
 from a clean state at `aacdde0` by adding `--build-dir=<empty dir>`, which leaves
 the real `_build` alone.
 
+### Smoke test (step 2)
+
+`node scripts/smoke.mjs` compiles both programs from `Examples.md` against the
+build in `grammo/_build`, so build the compiler first. It prints the results as
+JSON and exits 1 unless the first is `ok` and the second `error`. It is an ES
+module, so it loads the CommonJS-style compiler through `createRequire`.
+
 ### Example DSL programs
 
 | Where | Program | Expected result |

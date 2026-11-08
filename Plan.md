@@ -16,7 +16,7 @@ The user may reorder, split, or drop steps. Follow this file as it currently is.
 - [x] **1. Build the JS.** Build the JS target in release mode. Record the
   exact command and output path in `NOTES.md`.
   Done when: the file builds from a clean `_build`.
-- [ ] **2. Node smoke test.** Add `scripts/smoke.mjs`. It loads the built
+- [x] **2. Node smoke test.** Add `scripts/smoke.mjs`. It loads the built
   file in Node, compiles one valid and one invalid example program (taken from , and prints
   both results as JSON. Done when: `node scripts/smoke.mjs` shows one `ok`
   and one `error` result.
