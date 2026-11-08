@@ -75,7 +75,7 @@ npm install
 npm run build:compiler   # dune release build of the JS target + copy to public/grammo.js
 npm run dev              # Vite dev server
 npm run build            # build:compiler + Vite production build into web/dist/
-npm test                 # elm-test (+ the node smoke test once it exists)
+npm test                 # elm-test
 npm run format           # elm-format --yes src/ tests/
 ```
  

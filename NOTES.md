@@ -111,13 +111,6 @@ Output: `grammo/_build/default/bin/grammo_js.bc.js`, about 1.9 MB. It was checke
 from a clean state at `aacdde0` by adding `--build-dir=<empty dir>`, which leaves
 the real `_build` alone.
 
-### Smoke test (step 2)
-
-`node scripts/smoke.mjs` compiles both programs from `Examples.md` against the
-build in `grammo/_build`, so build the compiler first. It prints the results as
-JSON and exits 1 unless the first is `ok` and the second `error`. It is an ES
-module, so it loads the CommonJS-style compiler through `createRequire`.
-
 ### Example DSL programs
 
 | Where | Program | Expected result |
@@ -167,11 +160,6 @@ elm 0.19.3-0, elm-format 0.8.8, elm-test 0.19.3-0.
   `node-elm-compiler`, a dependency of vite-plugin-elm. It only runs at
   development time and is not bundled into the site.
 
-npm scripts that differ from `Claude.md` for now:
-
-| Script | Now | Becomes |
-|---|---|---|
-| `build:compiler` | Stub that only prints a message | Dune build + copy (step 8) |
 
 ## Elm decoder (step 7)
 
@@ -191,3 +179,16 @@ yet.
 
 Keep `Main.elm` importing a local module: vite-plugin-elm 3.0.1 generates
 `accept([""])` without one, and Vite then returns 500 for `Main.elm`.
+
+## Real compiler (step 8)
+
+`npm run build:compiler` runs the release build and copies the result to
+`public/grammo.js`. Run it once before `npm run dev`, and again after changing
+the compiler. `npm run build` runs it automatically.
+
+- The copy uses `cp -f` because dune's output is read-only, so a plain `cp`
+  would fail when overwriting an earlier copy.
+- Vite copies everything in `public/` to `dist/` unchanged, and the compiler is
+  never bundled.
+- `scripts/smoke.mjs` was removed at the user's request, so `npm test` is only
+  elm-test and no longer needs the compiler built.

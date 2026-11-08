@@ -4,10 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build:compiler": "echo 'build:compiler is a stub until step 8'",
+    "build:compiler": "mkdir -p public && cd ../grammo && dune build --profile release bin/grammo_js.bc.js && cp -f _build/default/bin/grammo_js.bc.js ../grammo-web/public/grammo.js",
     "dev": "vite",
     "build": "npm run build:compiler && vite build",
-    "test": "elm-test && node scripts/smoke.mjs",
+    "test": "elm-test",
     "format": "elm-format --yes src/ tests/"
   },
   "devDependencies": {

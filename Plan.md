@@ -43,7 +43,7 @@ The user may reorder, split, or drop steps. Follow this file as it currently is.
   and show Stan code and error. Add elm-test
   tests for the decoder, covering ok, error, warnings, and a malformed payload.
   Done when: `npm test` passes and both cases render with the stub.
-- [ ] **8. Real compiler on the main thread.** Implement `npm run build:compiler`
+- [x] **8. Real compiler on the main thread.** Implement `npm run build:compiler`
   (dune build + copy to `public/grammo.js`). Load it with a `<script>` tag and
   call it from `main.js`. Done when: real grammo code compiles in the browser.
 - [ ] **9. Move it into a Web Worker.** `public/compiler-worker.js` uses
