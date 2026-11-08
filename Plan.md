@@ -20,7 +20,7 @@ The user may reorder, split, or drop steps. Follow this file as it currently is.
   file in Node, compiles one valid and one invalid example program (taken from , and prints
   both results as JSON. Done when: `node scripts/smoke.mjs` shows one `ok`
   and one `error` result.
-- [ ] **3. Align the result format (only if step 0 found mismatches).**
+- [x] **3. Align the result format (only if step 0 found mismatches).**
   Propose the exact change to `bin/grammo_js.ml` and **wait for approval**
   before editing OCaml. Done when: the smoke test output matches the contract.
 
