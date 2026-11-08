@@ -35,7 +35,7 @@ The user may reorder, split, or drop steps. Follow this file as it currently is.
   for the DSL and a read-only `<pre>` for output, and another read-only `<pre>` for errors, plus a Compile button. The
   "compiler" is a pure Elm function (for example, upper-cases the input). No JS
   involved. Done when: typing then clicking Compile updates the right pane.
-- [ ] **6. Ports with a JS stub.** Add `port compile` / `port compiled`.
+- [x] **6. Ports with a JS stub.** Add `port compile` / `port compiled`.
   `main.js` answers with a hard-coded JS stub that returns a contract-shaped
   object. Elm just shows the raw JSON for now. Done when: the round trip works
   in the browser.
